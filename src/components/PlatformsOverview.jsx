@@ -18,7 +18,7 @@ export default function PlatformsOverview() {
 
   return (
     <section className="my-8">
-      <h2 className="text-xl font-bold text-white mb-4">Plateformes</h2>
+      <h2 className="text-xl font-bold text-white mb-4">Plateforms</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {platforms.map((p) => (
           <div

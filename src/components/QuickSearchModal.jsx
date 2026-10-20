@@ -78,7 +78,7 @@ export default function QuickSearchModal({ items, isOpen, onClose, onSelectItem 
           <input
             ref={inputRef}
             type="text"
-            placeholder="Rechercher une plateforme ou un lien..."
+            placeholder="Search..."
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
