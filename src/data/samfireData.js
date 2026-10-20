@@ -1,9 +1,11 @@
+import { asset } from "../utils/assets";
+
 export const samfireProfile = {
   handle: "samfire",
   name: "Hello there",
   bio: "general kenobi, you're a bold one",
   status: "Online",
-  avatar: "/images/avatar.jpg",
+  avatar: asset("/images/avatar.jpg"),
   avatarFallback: "https://pub-a56bebf01cf34815873f44877e90a86e.r2.dev/codeishot-link-previews/705/075a5db31be74b38864c270fba741f66",
   originUrl: "https://samfire2k2.github.io/Portfolio/",
 };
@@ -32,7 +34,7 @@ export const bentoItems = [
     platform: "Artwork",
     title: "Crimson Reverie",
     handle: "sfire.art • 4K",
-    src: "/images/art1.jpg",
+    src: asset("/images/art1.jpg"),
     srcFallback: "https://pub-a56bebf01cf34815873f44877e90a86e.r2.dev/codeishot-link-previews/705/ad306ea50cf146fb88fa1524d5bdec16.jpg",
     description: "Original character illustration showcase",
     brandColor: "#ffffff"
@@ -47,7 +49,7 @@ export const bentoItems = [
     platform: "Artwork",
     title: "Cyber Synthesis",
     handle: "sfire.art • 4K",
-    src: "/images/art2.png",
+    src: asset("/images/art2.png"),
     srcFallback: "https://pub-a56bebf01cf34815873f44877e90a86e.r2.dev/codeishot-link-previews/705/1a207127204b4f7480b64252c7adb3df.png",
     description: "High-resolution sci-fi canvas render",
     brandColor: "#ffffff"
@@ -94,7 +96,7 @@ export const bentoItems = [
     title: "Soundscapes Visual",
     handle: "Cover concept",
     focalPoint: { x: 50, y: 59.21 },
-    src: "/images/art3.webp",
+    src: asset("/images/art3.webp"),
     srcFallback: "https://pub-a56bebf01cf34815873f44877e90a86e.r2.dev/codeishot-link-previews/705/00195e2407f94cc9933fcfa20d8e4e8b.webp",
     description: "Visual identity & cyber moodboard",
     brandColor: "#ffffff"
@@ -276,7 +278,7 @@ export const bentoItems = [
     url: "https://www.artstation.com/samfireninja",
     description: "Professional digital art & 3D renders portfolio",
     badge: "Portfolio Pro",
-    previewImage: "/images/art2.png",
+    previewImage: asset("/images/art2.png"),
     brandColor: "#13AFF0"
   },
 

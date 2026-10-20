@@ -1,6 +1,7 @@
 import React from "react";
 import { Search, Volume2, VolumeX, Share2, ExternalLink, Command } from "lucide-react";
 import { sound } from "../utils/audio";
+import { asset } from "../utils/assets";
 
 export default function Navbar({
   onOpenSearch,
@@ -20,7 +21,7 @@ export default function Navbar({
         >
           <div className="w-8 h-8 rounded-full overflow-hidden border border-white/20 p-0.5 transition-transform duration-200 group-hover:scale-105">
             <img
-              src="/images/avatar.jpg"
+              src={asset("/images/avatar.jpg")}
               alt="Samfire"
               className="w-full h-full object-cover rounded-full"
             />

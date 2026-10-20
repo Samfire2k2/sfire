@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import PlatformIcon from "./PlatformIcon";
 import { ArrowUpRight, Copy, Check, Sparkles, Radio, Code2, Film, Tv, BookOpen } from "lucide-react";
 import { sound } from "../utils/audio";
+import { asset } from "../utils/assets";
 
 export default function GlassCard({ item, onSelectMedia, onCopyToast }) {
   const cardRef = useRef(null);
@@ -151,7 +152,7 @@ export default function GlassCard({ item, onSelectMedia, onCopyToast }) {
           {item.widgetType === "instagram" && (
             <div className="relative w-24 h-24 sm:w-28 sm:h-24 rounded-xl overflow-hidden border border-white/15 bg-zinc-900 group-hover:border-white/30 transition-all shadow-md">
               <img
-                src={item.previewImage || "/images/art1.jpg"}
+                src={item.previewImage || asset("/images/art1.jpg")}
                 alt="Instagram Art"
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
@@ -247,7 +248,7 @@ export default function GlassCard({ item, onSelectMedia, onCopyToast }) {
           {item.widgetType === "artstation" && (
             <div className="relative w-24 h-20 rounded-xl overflow-hidden border border-cyan-500/30 bg-zinc-900 group-hover:border-cyan-500/60 transition-all shadow-md">
               <img
-                src={item.previewImage || "/images/art2.png"}
+                src={item.previewImage || asset("/images/art2.png")}
                 alt="ArtStation 3D"
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />

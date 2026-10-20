@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Play, Pause, X, ChevronUp, ChevronDown, ExternalLink } from "lucide-react";
 import PlatformIcon from "./PlatformIcon";
 import { sound } from "../utils/audio";
+import { asset } from "../utils/assets";
 
 export default function YouTubePlayerDock({ isOpen, onClose }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -31,7 +32,7 @@ export default function YouTubePlayerDock({ isOpen, onClose }) {
               className="relative w-12 h-10 rounded-lg overflow-hidden border border-white/20 bg-zinc-900 shrink-0 cursor-pointer group"
             >
               <img
-                src="/images/hellfire.jpg"
+                src={asset("/images/hellfire.jpg")}
                 alt="Hellfire"
                 className="w-full h-full object-cover transition-transform group-hover:scale-110"
               />
