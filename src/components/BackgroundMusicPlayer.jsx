@@ -1,0 +1,107 @@
+import React, { useState, useRef, useEffect } from "react";
+import { Volume2, VolumeX, Music } from "lucide-react";
+
+export default function BackgroundMusicPlayer() {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const iframeRef = useRef(null);
+
+  // YouTube embed URL for Hellfire (loop + autoplay after interaction)
+  const videoId = "qRpEVIUviKs";
+  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&enablejsapi=1`;
+
+  // On first user interaction anywhere on the page, start the music
+  useEffect(() => {
+    const handleFirstInteraction = () => {
+      if (!hasInteracted) {
+        setHasInteracted(true);
+        setIsPlaying(true);
+      }
+    };
+    document.addEventListener("click", handleFirstInteraction, { once: true });
+    document.addEventListener("keydown", handleFirstInteraction, { once: true });
+    return () => {
+      document.removeEventListener("click", handleFirstInteraction);
+      document.removeEventListener("keydown", handleFirstInteraction);
+    };
+  }, [hasInteracted]);
+
+  const togglePlay = (e) => {
+    e.stopPropagation();
+    if (!hasInteracted) {
+      setHasInteracted(true);
+      setIsPlaying(true);
+      return;
+    }
+    setIsPlaying((prev) => !prev);
+  };
+
+  return (
+    <>
+      {/* Hidden YouTube iframe for audio */}
+      {hasInteracted && isPlaying && (
+        <div className="fixed -left-[9999px] -top-[9999px] w-0 h-0 overflow-hidden pointer-events-none">
+          <iframe
+            ref={iframeRef}
+            src={embedUrl}
+            title="Background Music - Hellfire"
+            allow="autoplay; encrypted-media"
+            width="1"
+            height="1"
+          />
+        </div>
+      )}
+
+      {/* Floating music control pill */}
+      <button
+        onClick={togglePlay}
+        className="fixed bottom-5 left-5 z-50 flex items-center gap-2 px-3 py-2 rounded-full backdrop-blur-2xl border border-white/15 bg-black/70 text-white shadow-lg hover:bg-black/90 transition-all group"
+        style={{
+          boxShadow: isPlaying
+            ? "0 0 20px rgba(255, 0, 0, 0.3), 0 4px 15px rgba(0, 0, 0, 0.5)"
+            : "0 4px 15px rgba(0, 0, 0, 0.5)"
+        }}
+      >
+        {/* Animated music icon */}
+        <div className="relative w-5 h-5 flex items-center justify-center">
+          {isPlaying ? (
+            <div className="flex items-end gap-[2px] h-4">
+              <span className="w-[3px] bg-red-500 rounded-full animate-[musicBar1_0.8s_ease-in-out_infinite]" />
+              <span className="w-[3px] bg-red-400 rounded-full animate-[musicBar2_0.6s_ease-in-out_infinite_0.2s]" />
+              <span className="w-[3px] bg-red-500 rounded-full animate-[musicBar3_0.7s_ease-in-out_infinite_0.1s]" />
+            </div>
+          ) : (
+            <Music className="w-4 h-4 text-zinc-400" />
+          )}
+        </div>
+
+        <span className="text-[11px] font-mono tracking-wide">
+          {isPlaying ? "Hellfire" : "Play"}
+        </span>
+
+        {isPlaying ? (
+          <VolumeX className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white transition-colors" />
+        ) : (
+          <Volume2 className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white transition-colors" />
+        )}
+      </button>
+
+      {/* Keyframe animations injected via style tag */}
+      <style>{`
+        @keyframes musicBar1 {
+          0%, 100% { height: 30%; }
+          50% { height: 100%; }
+        }
+        @keyframes musicBar2 {
+          0%, 100% { height: 50%; }
+          50% { height: 80%; }
+        }
+        @keyframes musicBar3 {
+          0%, 100% { height: 40%; }
+          50% { height: 95%; }
+        }
+      `}</style>
+    </>
+  );
+}
+
