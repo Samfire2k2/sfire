@@ -1,14 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Volume2, VolumeX, Music } from "lucide-react";
+import { asset } from "../utils/assets";
 
 export default function BackgroundMusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
-  const iframeRef = useRef(null);
+  const audioRef = useRef(null);
 
-  // YouTube embed URL for Hellfire (loop + autoplay after interaction)
-  const videoId = "qRpEVIUviKs";
-  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&enablejsapi=1`;
+  const audioSrc = asset("/music.mp3");
 
   // On first user interaction anywhere on the page, start the music
   useEffect(() => {
@@ -26,6 +25,17 @@ export default function BackgroundMusicPlayer() {
     };
   }, [hasInteracted]);
 
+  // Play/pause the audio element in response to isPlaying
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (isPlaying) {
+      audio.play().catch(() => {});
+    } else {
+      audio.pause();
+    }
+  }, [isPlaying, hasInteracted]);
+
   const togglePlay = (e) => {
     e.stopPropagation();
     if (!hasInteracted) {
@@ -38,18 +48,9 @@ export default function BackgroundMusicPlayer() {
 
   return (
     <>
-      {/* Hidden YouTube iframe for audio */}
-      {hasInteracted && isPlaying && (
-        <div className="fixed -left-[9999px] -top-[9999px] w-0 h-0 overflow-hidden pointer-events-none">
-          <iframe
-            ref={iframeRef}
-            src={embedUrl}
-            title="Background Music - Hellfire"
-            allow="autoplay; encrypted-media"
-            width="1"
-            height="1"
-          />
-        </div>
+      {/* Hidden audio element */}
+      {hasInteracted && (
+        <audio ref={audioRef} src={audioSrc} loop preload="auto" />
       )}
 
       {/* Floating music control pill */}
@@ -58,7 +59,7 @@ export default function BackgroundMusicPlayer() {
         className="fixed bottom-5 left-5 z-50 flex items-center gap-2 px-3 py-2 rounded-full backdrop-blur-2xl border border-white/15 bg-black/70 text-white shadow-lg hover:bg-black/90 transition-all group"
         style={{
           boxShadow: isPlaying
-            ? "0 0 20px rgba(255, 0, 0, 0.3), 0 4px 15px rgba(0, 0, 0, 0.5)"
+            ? "0 0 20px rgba(255, 255, 255, 0.3), 0 4px 15px rgba(0, 0, 0, 0.5)"
             : "0 4px 15px rgba(0, 0, 0, 0.5)"
         }}
       >
@@ -66,9 +67,9 @@ export default function BackgroundMusicPlayer() {
         <div className="relative w-5 h-5 flex items-center justify-center">
           {isPlaying ? (
             <div className="flex items-end gap-[2px] h-4">
-              <span className="w-[3px] bg-red-500 rounded-full animate-[musicBar1_0.8s_ease-in-out_infinite]" />
-              <span className="w-[3px] bg-red-400 rounded-full animate-[musicBar2_0.6s_ease-in-out_infinite_0.2s]" />
-              <span className="w-[3px] bg-red-500 rounded-full animate-[musicBar3_0.7s_ease-in-out_infinite_0.1s]" />
+              <span className="w-[3px] bg-white rounded-full animate-[musicBar1_0.8s_ease-in-out_infinite]" />
+              <span className="w-[3px] bg-white/80 rounded-full animate-[musicBar2_0.6s_ease-in-out_infinite_0.2s]" />
+              <span className="w-[3px] bg-white rounded-full animate-[musicBar3_0.7s_ease-in-out_infinite_0.1s]" />
             </div>
           ) : (
             <Music className="w-4 h-4 text-zinc-400" />
@@ -76,7 +77,7 @@ export default function BackgroundMusicPlayer() {
         </div>
 
         <span className="text-[11px] font-mono tracking-wide">
-          {isPlaying ? "Hellfire" : "Play"}
+          {isPlaying ? "Music" : "Play"}
         </span>
 
         {isPlaying ? (
@@ -104,4 +105,3 @@ export default function BackgroundMusicPlayer() {
     </>
   );
 }
-
