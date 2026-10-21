@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import confetti from "canvas-confetti";
-import { bentoItems } from "./data/samfireData";
+import { useLanguage } from "./i18n/LanguageContext";
 import { sound } from "./utils/audio";
 import Navbar from "./components/Navbar";
 import HeroProfile from "./components/HeroProfile";
@@ -9,17 +9,14 @@ import MediaCard from "./components/MediaCard";
 import BackgroundMusicPlayer from "./components/BackgroundMusicPlayer";
 import LightboxModal from "./components/LightboxModal";
 import QuickSearchModal from "./components/QuickSearchModal";
-import ShareModal from "./components/ShareModal";
 import ToastSystem from "./components/ToastSystem";
 import Footer from "./components/Footer";
-import PlatformsOverview from "./components/PlatformsOverview";
 
 export default function App() {
+  const { items, t } = useLanguage();
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isShareOpen, setIsShareOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
-  const [sfxMuted, setSfxMuted] = useState(sound.isMuted());
 
   // Mouse cursor ambient white glow tracking
   const [mousePos, setMousePos] = useState({ x: -500, y: -500 });
@@ -37,12 +34,6 @@ export default function App() {
     setTimeout(() => setToastMessage(null), 2500);
   };
 
-  const toggleSfx = () => {
-    const active = sound.toggleMute();
-    setSfxMuted(!active);
-    showToast(active ? "Sons activés 🔊" : "Sons coupés 🔇");
-  };
-
   // Easter Egg trigger: Kenobi lightsaber & silver/white confetti explosion!
   const triggerEasterEgg = () => {
     sound.playLightsaber();
@@ -55,7 +46,7 @@ export default function App() {
         origin: { y: 0.35 },
         colors: ["#ffffff", "#e2e8f0", "#94a3b8", "#f8fafc", "#FF0000"]
       });
-    } catch (e) {}
+    } catch {}
   };
 
   return (
@@ -91,9 +82,6 @@ export default function App() {
         {/* Minimal Floating Glass Navbar */}
         <Navbar
           onOpenSearch={() => setIsSearchOpen(true)}
-          onOpenShare={() => setIsShareOpen(true)}
-          sfxMuted={sfxMuted}
-          onToggleSfx={toggleSfx}
           onEasterEgg={triggerEasterEgg}
         />
 
@@ -104,9 +92,9 @@ export default function App() {
         />
 
         {/* Bento Grid: EXACT order of tiles from avely.me/samfire (0 to 20) with wide horizontal landscape cards */}
-        <main className="flex-1 px-4 sm:px-6 max-w-5xl mx-auto w-full my-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-            {bentoItems.map((item) =>
+        <main className="flex-1 px-4 sm:px-6 max-w-5xl mx-auto w-full my-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+            {items.map((item) =>
               item.type === "media" ? (
                 <MediaCard
                   key={item.id}
@@ -124,8 +112,6 @@ export default function App() {
             )}
           </div>
         </main>
-        <PlatformsOverview />
-
         {/* Minimal Footer */}
         <Footer />
       </div>
@@ -142,7 +128,7 @@ export default function App() {
 
       {/* Quick Search Modal */}
       <QuickSearchModal
-        items={bentoItems}
+        items={items}
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
         onSelectItem={(item) => {
@@ -158,15 +144,8 @@ export default function App() {
         }}
       />
 
-      {/* Share Modal */}
-      <ShareModal
-        isOpen={isShareOpen}
-        onClose={() => setIsShareOpen(false)}
-        onCopyToast={showToast}
-      />
-
-      {/* Toast Notification */}
-      <ToastSystem toast={toastMessage} />
+  {/* Toast Notification */}
+  <ToastSystem toast={toastMessage} />
     </div>
   );
 }

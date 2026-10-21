@@ -1,7 +1,7 @@
 import React from "react";
-import { Sparkles, ExternalLink, Film, Tv, Radio, BookOpen, Gamepad2 } from "lucide-react";
+import { Sparkles, ExternalLink } from "lucide-react";
 
-export default function PlatformIcon({ platform, className = "w-5 h-5", colored = true }) {
+export default function PlatformIcon({ platform, className = "w-5 h-5" }) {
   const p = (platform || "").toLowerCase();
 
   // Instagram: Official Gradient Icon
@@ -156,7 +156,14 @@ export default function PlatformIcon({ platform, className = "w-5 h-5", colored 
     );
   }
 
-  // End of Line: Cyan Sci-Fi Matrix
+  // Nocteller: Deep violet
+  if (p.includes("nocteller")) {
+    return (
+      <div className="w-5 h-5 rounded-md bg-[#00E054] flex items-center justify-center text-white font-black text-[11px]">
+        N
+      </div>
+    );
+  }
   if (p.includes("end of line")) {
     return (
       <div className="w-5 h-5 rounded-md bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white">

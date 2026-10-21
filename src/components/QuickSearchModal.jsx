@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { Search, X, CornerDownLeft } from "lucide-react";
 import PlatformIcon from "./PlatformIcon";
 import { sound } from "../utils/audio";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export default function QuickSearchModal({ items, isOpen, onClose, onSelectItem }) {
+  const { t } = useLanguage();
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef(null);
@@ -78,7 +80,7 @@ export default function QuickSearchModal({ items, isOpen, onClose, onSelectItem 
           <input
             ref={inputRef}
             type="text"
-            placeholder="Search..."
+            placeholder={t("searchPlaceholder")}
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
@@ -103,7 +105,7 @@ export default function QuickSearchModal({ items, isOpen, onClose, onSelectItem 
         <div className="max-h-[50vh] overflow-y-auto p-2 space-y-1">
           {filtered.length === 0 ? (
             <div className="p-6 text-center text-zinc-500 text-xs">
-              Aucun résultat pour "<span className="text-zinc-300">{query}</span>"
+              {t("noResults")} "<span className="text-zinc-300">{query}</span>"
             </div>
           ) : (
             filtered.map((item, idx) => {
@@ -152,8 +154,8 @@ export default function QuickSearchModal({ items, isOpen, onClose, onSelectItem 
 
         {/* Footer */}
         <div className="p-2.5 px-4 border-t border-white/10 bg-white/[0.01] flex items-center justify-between text-[11px] text-zinc-500 font-mono">
-          <span>{filtered.length} résultats</span>
-          <span>↑↓ Naviguer • ↵ Ouvrir</span>
+          <span>{filtered.length} {t("results")}</span>
+          <span>↑↓ {t("navigate")} • ↵ {t("open")}</span>
         </div>
       </div>
     </div>

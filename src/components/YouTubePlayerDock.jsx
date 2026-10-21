@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Play, Pause, X, ChevronUp, ChevronDown, ExternalLink } from "lucide-react";
+import { Play, X, ChevronUp, ChevronDown, ExternalLink } from "lucide-react";
 import PlatformIcon from "./PlatformIcon";
 import { sound } from "../utils/audio";
 import { asset } from "../utils/assets";
@@ -65,7 +65,7 @@ export default function YouTubePlayerDock({ isOpen, onClose }) {
               }}
               className="px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20 border border-white/15 text-[11px] font-medium text-white transition-colors"
             >
-              {isExpanded ? "Réduire" : "Lecteur"}
+              {isExpanded ? "Collapse" : "Player"}
             </button>
 
             <button
@@ -106,7 +106,7 @@ export default function YouTubePlayerDock({ isOpen, onClose }) {
 
             <div className="mt-2 flex items-center justify-between text-xs">
               <span className="text-[11px] text-zinc-400">
-                OST Officielle Arcane S2
+                OST Official Arcane S2
               </span>
               <a
                 href="https://www.youtube.com/watch?v=qRpEVIUviKs"
@@ -115,7 +115,7 @@ export default function YouTubePlayerDock({ isOpen, onClose }) {
                 onClick={() => sound.playClick()}
                 className="text-zinc-300 hover:text-white flex items-center gap-1 transition-colors"
               >
-                <span>Ouvrir sur YouTube</span>
+                <span>Open on YouTube</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
             </div>

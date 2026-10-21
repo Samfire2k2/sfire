@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import { Maximize2, Sparkles, Eye, Image as ImageIcon } from "lucide-react";
 import { sound } from "../utils/audio";
 
 export default function MediaCard({ item, onSelectMedia }) {
@@ -49,12 +48,12 @@ export default function MediaCard({ item, onSelectMedia }) {
         transition: isHovered
           ? "transform 0.08s ease-out, border-color 0.2s ease, box-shadow 0.2s ease"
           : "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease",
-        borderColor: isHovered ? "rgba(255, 255, 255, 0.35)" : "rgba(255, 255, 255, 0.08)",
+        borderColor: isHovered ? `${item.brandColor || "#ffffff"}59` : `${item.brandColor || "#ffffff"}14`,
         boxShadow: isHovered
-          ? "0 12px 36px -10px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 255, 255, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.25)"
+          ? `0 12px 36px -10px rgba(0,0,0,0.8), 0 0 25px ${item.brandColor || "#ffffff"}, inset 0 1px 0 ${item.brandColor || "#ffffff"}40`
           : "0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04)"
       }}
-      className="group relative rounded-2xl overflow-hidden cursor-pointer backdrop-blur-xl border bg-white/[0.03] col-span-1 min-h-[160px] sm:min-h-[175px] flex flex-col justify-between"
+      className="group relative rounded-2xl overflow-hidden cursor-pointer backdrop-blur-xl border bg-white/[0.03] col-span-1 min-h-[120px] sm:min-h-[140px] flex flex-col justify-between"
     >
       {/* Background High-Res Image */}
       <div className="absolute inset-0 z-0 overflow-hidden">

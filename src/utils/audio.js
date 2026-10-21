@@ -4,7 +4,7 @@ class SoundFX {
   constructor() {
     this.ctx = null;
     this.muted = false;
-    // Charger la préférence de l'utilisateur
+    // Load user preference
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("samfire_sfx_muted");
       this.muted = saved === "true";
@@ -55,7 +55,7 @@ class SoundFX {
 
       osc.start();
       osc.stop(this.ctx.currentTime + 0.05);
-    } catch (e) {
+    } catch {
       // AudioContext might be blocked until user gesture
     }
   }
@@ -80,7 +80,7 @@ class SoundFX {
 
       osc.start();
       osc.stop(this.ctx.currentTime + 0.07);
-    } catch (e) {}
+    } catch {}
   }
 
   playOpenModal() {
@@ -101,7 +101,7 @@ class SoundFX {
         osc.start(now + idx * 0.03);
         osc.stop(now + idx * 0.03 + 0.16);
       });
-    } catch (e) {}
+    } catch {}
   }
 
   playSuccess() {
@@ -122,7 +122,7 @@ class SoundFX {
         osc.start(now + idx * 0.04);
         osc.stop(now + idx * 0.04 + 0.22);
       });
-    } catch (e) {}
+    } catch {}
   }
 
   playLightsaber() {
@@ -132,7 +132,7 @@ class SoundFX {
       if (!this.ctx) return;
       const now = this.ctx.currentTime;
       
-      // Synthèse d'ignition sabre laser (Kenobi Easter Egg!)
+      // Lightsaber ignition synthesis (Kenobi Easter Egg!)
       const osc = this.ctx.createOscillator();
       const osc2 = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
@@ -160,7 +160,7 @@ class SoundFX {
       osc2.start(now);
       osc.stop(now + 0.75);
       osc2.stop(now + 0.75);
-    } catch (e) {}
+    } catch {}
   }
 }
 

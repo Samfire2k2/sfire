@@ -1,10 +1,11 @@
 import React, { useRef, useState } from "react";
 import PlatformIcon from "./PlatformIcon";
-import { ArrowUpRight, Copy, Check, Sparkles, Radio, Code2, Film, Tv, BookOpen } from "lucide-react";
+import { ArrowUpRight, Copy, Check, Code2 } from "lucide-react";
 import { sound } from "../utils/audio";
-import { asset } from "../utils/assets";
+import { useLanguage } from "../i18n/LanguageContext";
 
-export default function GlassCard({ item, onSelectMedia, onCopyToast }) {
+export default function GlassCard({ item, onCopyToast }) {
+  const { t } = useLanguage();
   const cardRef = useRef(null);
   const [transform, setTransform] = useState("");
   const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
@@ -48,7 +49,7 @@ export default function GlassCard({ item, onSelectMedia, onCopyToast }) {
     navigator.clipboard.writeText(text);
     setCopied(true);
     sound.playSuccess();
-    if (onCopyToast) onCopyToast(`Copié : ${item.title}`);
+    if (onCopyToast) onCopyToast(`${t("copied")}: ${item.title}`);
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -71,13 +72,21 @@ export default function GlassCard({ item, onSelectMedia, onCopyToast }) {
         transition: isHovered
           ? "transform 0.08s ease-out, border-color 0.2s ease, box-shadow 0.2s ease"
           : "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease",
-        borderColor: isHovered ? "rgba(255, 255, 255, 0.35)" : "rgba(255, 255, 255, 0.08)",
+        borderColor: isHovered ? `${item.brandColor}59` : `${item.brandColor}14`,
         boxShadow: isHovered
-          ? `0 12px 36px -10px rgba(0,0,0,0.8), 0 0 25px ${item.brandColor}, inset 0 1px 0 rgba(255,255,255,0.25)`
-          : "0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04)"
+          ? item.widgetType === "letterboxd"
+            ? "0 12px 36px -10px rgba(0,0,0,0.8), -18px 0 32px rgba(255,128,0,0.55), 0 0 16px rgba(0,224,84,0.25), 18px 0 32px rgba(64,188,244,0.55), inset 0 1px 0 rgba(255,255,255,0.25)"
+            : item.widgetType === "tiktok"
+              ? "0 12px 36px -10px rgba(0,0,0,0.8), -16px 0 28px rgba(37,244,238,0.5), 16px 0 28px rgba(254,44,85,0.5), inset 0 1px 0 rgba(255,255,255,0.25)"
+              : `0 12px 36px -10px rgba(0,0,0,0.8), 0 0 25px ${item.brandColor}, inset 0 1px 0 ${item.brandColor}40`
+          : item.widgetType === "letterboxd"
+            ? "0 4px 20px rgba(0,0,0,0.3), -14px 0 24px rgba(255,128,0,0.28), 0 0 10px rgba(0,224,84,0.12), 14px 0 24px rgba(64,188,244,0.28), inset 0 1px 0 rgba(255,255,255,0.04)"
+            : item.widgetType === "tiktok"
+              ? "0 4px 20px rgba(0,0,0,0.3), -12px 0 20px rgba(37,244,238,0.25), 12px 0 20px rgba(254,44,85,0.25), inset 0 1px 0 rgba(255,255,255,0.04)"
+              : "0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04)"
       }}
-      className={`group relative rounded-2xl p-4 sm:p-5 cursor-pointer overflow-hidden backdrop-blur-xl border transition-colors duration-200
-        ${isFull ? "sm:col-span-2 min-h-[160px]" : "col-span-1 min-h-[160px] sm:min-h-[175px]"}
+      className={`group relative rounded-2xl p-3 sm:p-4 cursor-pointer overflow-hidden backdrop-blur-xl border transition-colors duration-200
+        ${isFull ? "sm:col-span-2 min-h-[120px]" : "col-span-1 min-h-[120px] sm:min-h-[140px]"}
         ${isHovered ? "bg-white/[0.07]" : "bg-white/[0.03]"}
         flex flex-col justify-between
       `}
@@ -117,7 +126,7 @@ export default function GlassCard({ item, onSelectMedia, onCopyToast }) {
               <button
                 onClick={handleCopy}
                 className="p-1.5 rounded-lg opacity-0 group-hover:opacity-100 hover:bg-white/10 text-zinc-400 hover:text-white transition-all"
-                title="Copier le lien"
+                title="Copy link"
               >
                 {copied ? <Check className="w-3.5 h-3.5 text-white" /> : <Copy className="w-3.5 h-3.5" />}
               </button>
@@ -129,9 +138,15 @@ export default function GlassCard({ item, onSelectMedia, onCopyToast }) {
           </div>
 
           {/* Title & Description */}
-          <h3 className="text-base sm:text-lg font-bold text-white tracking-tight group-hover:text-white transition-colors">
-            {item.title}
-          </h3>
+<h3 className="text-base sm:text-lg font-bold tracking-tight transition-colors" style={
+  item.widgetType === "letterboxd"
+    ? { fontFamily: "'Sora', sans-serif", background: "linear-gradient(to right, #FF8000, #00E054, #40BCF4)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent", textShadow: "0 0 8px rgba(0,224,84,0.4)" }
+    : item.widgetType === "tiktok"
+      ? { fontFamily: "'Sora', sans-serif", background: "linear-gradient(to right, #25F4EE, #FE2C55)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent", textShadow: "0 0 8px rgba(254,44,85,0.4)" }
+      : { fontFamily: "'Sora', sans-serif", color: item.brandColor, textShadow: `0 0 8px ${item.brandColor}80, 0 0 16px ${item.brandColor}40` }
+}>
+  {item.title}
+</h3>
           <p className="text-xs text-zinc-400 line-clamp-2 mt-1 leading-relaxed">
             {item.description}
           </p>
@@ -150,15 +165,8 @@ export default function GlassCard({ item, onSelectMedia, onCopyToast }) {
         <div className="shrink-0 self-center sm:self-auto sm:ml-2">
           {/* 1. Instagram Art Preview */}
           {item.widgetType === "instagram" && (
-            <div className="relative w-24 h-24 sm:w-28 sm:h-24 rounded-xl overflow-hidden border border-white/15 bg-zinc-900 group-hover:border-white/30 transition-all shadow-md">
-              <img
-                src={item.previewImage || asset("/images/art1.jpg")}
-                alt="Instagram Art"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-1.5">
-                <span className="text-[9px] font-mono text-white/90">@sfire.art</span>
-              </div>
+            <div className="relative w-24 h-24 sm:w-28 sm:h-24 rounded-xl overflow-hidden border border-white/15 bg-zinc-900 group-hover:border-white/30 transition-all shadow-md flex items-center justify-center">
+              <PlatformIcon platform="Instagram" className="w-10 h-10" />
             </div>
           )}
 
@@ -207,7 +215,7 @@ export default function GlassCard({ item, onSelectMedia, onCopyToast }) {
                 Community Хо火
               </span>
               <span className="text-[9px] px-2 py-0.5 rounded bg-[#5865F2] text-white font-medium text-center">
-                Rejoindre
+                Rejoin
               </span>
             </div>
           )}
@@ -215,14 +223,16 @@ export default function GlassCard({ item, onSelectMedia, onCopyToast }) {
           {/* 6. Letterboxd Film Diary Widget */}
           {item.widgetType === "letterboxd" && (
             <div className="w-24 h-20 rounded-xl border border-white/10 bg-white/5 p-2 flex flex-col justify-between text-left">
-              <div className="flex items-center gap-1">
-                <span className="text-amber-400 text-xs">★★★★★</span>
+              <div className="flex items-center -space-x-1">
+                <span className="w-4 h-4 rounded-full bg-[#FF8000] opacity-90" />
+                <span className="w-2 h-2 rounded-full bg-[#00E054] opacity-90" />
+                <span className="w-4 h-4 rounded-full bg-[#40BCF4] opacity-90" />
               </div>
               <span className="text-[10px] font-mono text-zinc-300">
                 Film Log
               </span>
-              <span className="text-[9px] text-[#00E054] font-mono">
-                Cinéphile
+              <span className="text-[9px] font-mono" style={{ color: "#00E054" }}>
+                Cinephile
               </span>
             </div>
           )}
@@ -246,15 +256,8 @@ export default function GlassCard({ item, onSelectMedia, onCopyToast }) {
 
           {/* 8. ArtStation Pro Widget */}
           {item.widgetType === "artstation" && (
-            <div className="relative w-24 h-20 rounded-xl overflow-hidden border border-cyan-500/30 bg-zinc-900 group-hover:border-cyan-500/60 transition-all shadow-md">
-              <img
-                src={item.previewImage || asset("/images/art2.png")}
-                alt="ArtStation 3D"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-1">
-                <span className="text-[9px] font-mono text-cyan-300">3D Render</span>
-              </div>
+            <div className="relative w-24 h-20 rounded-xl overflow-hidden border border-cyan-500/30 bg-zinc-900 group-hover:border-cyan-500/60 transition-all shadow-md flex items-center justify-center">
+              <PlatformIcon platform="ArtStation" className="w-10 h-10" />
             </div>
           )}
 

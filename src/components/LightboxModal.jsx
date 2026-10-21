@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { X, ZoomIn, ZoomOut, Download, Copy, ExternalLink, Check } from "lucide-react";
+import { X, ZoomIn, ZoomOut, Download, Copy, Check } from "lucide-react";
 import { sound } from "../utils/audio";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export default function LightboxModal({ mediaItem, onClose, onCopyToast }) {
+  const { t } = useLanguage();
   const [zoom, setZoom] = useState(1);
   const [copied, setCopied] = useState(false);
 
@@ -21,7 +23,7 @@ export default function LightboxModal({ mediaItem, onClose, onCopyToast }) {
     navigator.clipboard.writeText(src);
     setCopied(true);
     sound.playSuccess();
-    if (onCopyToast) onCopyToast("Lien de l'image copié !");
+    if (onCopyToast) onCopyToast(t("imageLinkCopied"));
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -58,7 +60,7 @@ export default function LightboxModal({ mediaItem, onClose, onCopyToast }) {
                   setZoom((z) => Math.max(0.75, z - 0.25));
                 }}
                 className="p-1 text-zinc-400 hover:text-white transition-colors"
-                title="Dézoomer"
+                title={t("zoomOut")}
               >
                 <ZoomOut className="w-3.5 h-3.5" />
               </button>
@@ -71,7 +73,7 @@ export default function LightboxModal({ mediaItem, onClose, onCopyToast }) {
                   setZoom((z) => Math.min(2.5, z + 0.25));
                 }}
                 className="p-1 text-zinc-400 hover:text-white transition-colors"
-                title="Zoomer"
+                title={t("zoomIn")}
               >
                 <ZoomIn className="w-3.5 h-3.5" />
               </button>
@@ -80,7 +82,7 @@ export default function LightboxModal({ mediaItem, onClose, onCopyToast }) {
             <button
               onClick={handleCopyLink}
               className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-400 hover:text-white transition-colors"
-              title="Copier le lien"
+              title={t("copyLink")}
             >
               {copied ? <Check className="w-3.5 h-3.5 text-white" /> : <Copy className="w-3.5 h-3.5" />}
             </button>
@@ -88,7 +90,7 @@ export default function LightboxModal({ mediaItem, onClose, onCopyToast }) {
             <button
               onClick={handleDownload}
               className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-400 hover:text-white transition-colors"
-              title="Télécharger"
+              title={t("download")}
             >
               <Download className="w-3.5 h-3.5" />
             </button>
@@ -99,7 +101,7 @@ export default function LightboxModal({ mediaItem, onClose, onCopyToast }) {
                 onClose();
               }}
               className="p-1.5 rounded-lg hover:bg-white/10 text-zinc-400 hover:text-white transition-colors"
-              title="Fermer"
+              title={t("close")}
             >
               <X className="w-4 h-4" />
             </button>
