@@ -59,6 +59,14 @@ export default function App() {
           background: "radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 70%)"
         }}
       />
+      {/* Pure White / Silver Ambient Cursor Glow */}
+      <div
+        className="pointer-events-none fixed z-0 w-[600px] h-[600px] rounded-full blur-[150px] opacity-15 transition-transform duration-75 ease-out"
+        style={{
+          transform: `translate(${mousePos.x - 300}px, ${mousePos.y - 300}px)`,
+          background: "radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 70%)"
+        }}
+      />
 
       {/* Floating White Ambient Glow Orbs */}
       <div
